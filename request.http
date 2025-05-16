@@ -1,0 +1,139 @@
+
+# Sistema de Gestión de Biblioteca - Endpoints de Libros
+
+# La URL base de tu API. Asegúrate de que tu app Flask esté corriendo en este puerto.
+# Por defecto, Flask usa 127.0.0.1:5000
+@base_url = http://127.0.0.1:5000
+
+
+###
+### Sección: Endpoints GET (Lectura y Búsqueda)
+###
+
+### 1. Obtener todos los libros (sin filtros)
+GET {{base_url}}/libros
+Accept: application/json
+
+### 2. Buscar libros por título (parcial e insensible a mayúsculas/minúsculas)
+# Ejemplo: Busca libros cuyo título contenga "cien"
+GET {{base_url}}/libros?titulo=cien
+Accept: application/json
+
+### 3. Buscar libros por autor (parcial e insensible a mayúsculas/minúsculas)
+# Ejemplo: Busca libros cuyo autor contenga "garcia"
+GET {{base_url}}/libros?autor=garcia
+Accept: application/json
+
+### 4. Filtrar libros por categoría (parcial e insensible a mayúsculas/minúsculas)
+# Ejemplo: Busca libros cuya categoría contenga "novela"
+GET {{base_url}}/libros?categoria=novela
+Accept: application/json
+
+### 5. Filtrar libros por estado (parcial e insensible a mayúsculas/minúsculas)
+# Ejemplo: Busca libros cuyo estado contenga "disponible"
+GET {{base_url}}/libros?estado=disponible
+Accept: application/json
+
+### 6. Combinar filtros (ejemplo: título y autor)
+# Busca libros con "cien" en el título Y "garcia" en el autor
+GET {{base_url}}/libros?titulo=cien&autor=garcia
+Accept: application/json
+
+### 7. Combinar filtros (ejemplo: categoría y estado)
+# Busca libros con "novela" en la categoría Y "prestado" en el estado
+GET {{base_url}}/libros?categoria=novela&estado=prestado
+Accept: application/json
+
+### 8. Obtener un libro específico por ID
+# **IMPORTANTE**: Reemplaza '1' con un ID de libro existente en tu base de datos
+GET {{base_url}}/libros/1
+Accept: application/json
+
+### 9. Intentar obtener un libro por ID que no existe
+# Esto debería devolver un error 404
+GET {{base_url}}/libros/9999
+Accept: application/json
+
+
+###
+### Sección: Endpoint POST (Creación)
+###
+
+### 10. Crear un nuevo libro (éxito)
+POST {{base_url}}/libros
+Content-Type: application/json
+
+{
+  "titulo": "Cien años de soledad",
+  "autor": "Gabriel García Márquez",
+  "categoria": "Novela",
+  "estado": "disponible"
+}
+
+### 11. Crear otro libro (éxito)
+# Para tener más datos para probar la búsqueda y el filtrado
+POST {{base_url}}/libros
+Content-Type: application/json
+
+{
+  "titulo": "El Principito",
+  "autor": "Antoine de Saint-Exupéry",
+  "categoria": "Fábula Infantil",
+  "estado": "disponible"
+}
+
+### 12. Crear un libro con datos incompletos (debería dar 400 Bad Request)
+POST {{base_url}}/libros
+Content-Type: application/json
+
+{
+  "titulo": "Libro Incompleto",
+  "autor": "Autor Desconocido"
+  // Faltan "categoria"
+}
+
+
+###
+### Sección: Endpoint PUT (Actualización)
+###
+
+### 13. Actualizar un libro existente (cambiar estado)
+# **IMPORTANTE**: Reemplaza '1' con el ID de un libro real que quieras actualizar.
+# Por ejemplo, usa el ID del libro que creaste en el punto 10.
+PUT {{base_url}}/libros/1
+Content-Type: application/json
+
+{
+  "estado": "prestado"
+}
+
+### 14. Actualizar un libro existente (cambiar título y categoría)
+# **IMPORTANTE**: Reemplaza '1' con el ID de un libro real.
+PUT {{base_url}}/libros/1
+Content-Type: application/json
+
+{
+  "titulo": "Cien años de soledad (Edición Especial)",
+  "categoria": "Realismo Mágico"
+}
+
+### 15. Intentar actualizar un libro que no existe (debería dar 404 Not Found)
+PUT {{base_url}}/libros/9999
+Content-Type: application/json
+
+{
+  "titulo": "Título para un libro inexistente"
+}
+
+
+###
+### Sección: Endpoint DELETE (Eliminación)
+###
+
+### 16. Eliminar un libro existente
+# **IMPORTANTE**: Reemplaza '1' con el ID de un libro real que quieras eliminar.
+# Ten en cuenta que una vez eliminado, no podrás usar ese ID.
+DELETE {{base_url}}/libros/1
+
+### 17. Intentar eliminar un libro que no existe (debería dar 404 Not Found)
+DELETE {{base_url}}/libros/9999
