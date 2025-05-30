@@ -1,10 +1,13 @@
 from flask import Flask, request, jsonify
 from flask_sqlalchemy import SQLAlchemy
+from flask_cors import CORS
 from config import Config
 import os
 
 app = Flask(__name__)
 app.config.from_object(Config)
+
+CORS(app) # 2. Habilita CORS para tu aplicación Flask
 
 # PASO 1: Inicializa SQLAlchemy sin pasarle la app directamente todavía.
 # En este punto, 'db' es una instancia de SQLAlchemy, pero aún no sabe
